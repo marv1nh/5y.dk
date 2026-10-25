@@ -307,7 +307,7 @@ function homeMarkup(posts) {
         <a class="text-link" href="#about">More about me <span aria-hidden="true">↗</span></a>
       </div>
       <div class="terminal-card reveal" aria-label="Terminal introduction">
-        <div class="terminal-top"><small>At a glance</small></div>
+        <div class="terminal-top"><small>About</small></div>
         <div class="terminal-body">
           <p class="card-label">Focus</p>
           <p class="terminal-output">Danish CTF player &amp; Challenge developer</p>
