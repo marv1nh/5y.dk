@@ -312,7 +312,7 @@ function homeMarkup(posts) {
           <p class="card-label">Focus</p>
           <p class="terminal-output">Danish CTF player &amp; Challenge developer</p>
           <p class="card-label">Contact</p>
-          <p class="terminal-output">marv1nh@5y.dk - <a href="https://www.linkedin.com/in/marvin-hald-b284b3380/">LinkedIn</a> - <a href="https://github.com/marv1nh">GitHub</a></p>
+          <p class="terminal-output">Discord: marv1nh - <a href="https://www.linkedin.com/in/marvin-hald-b284b3380/">LinkedIn</a> - <a href="https://github.com/marv1nh">GitHub</a></p>
         </div>
       </div>
     </section>
