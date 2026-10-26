@@ -1,5 +1,9 @@
 # Corsica - Web Exploitation
 
+## About the competition
+
+This challenge was part of the DDC (De Danske Cybermesterskaber) fast track 2026. 
+
 ## Initial recon
 
 The target is a web application running on `https://corsica.cfire/`. The application has an admin panel at `https://corsica.cfire/admin` that is protected by authentication.

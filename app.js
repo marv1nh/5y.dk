@@ -1,7 +1,7 @@
 "use strict";
 
-const SITE_TITLE = "Marv1nh";
-const SITE_TAGLINE = "CTF writeups and other projects";
+const SITE_TITLE = "marv1nh";
+const SITE_TAGLINE = "Cyber Security and CTF writeups";
 
 const WRITEUPS = [
     { slug: "doctor-bye-bye", file: "doctor-bye-bye.md", date: "2026-10-19", readTime: 5 },
@@ -300,7 +300,7 @@ function homeMarkup(posts) {
   return `
     <section class="hero" aria-labelledby="hero-title">
       <div class="hero-glow" aria-hidden="true"></div>
-      <div class="eyebrow reveal"><span class="status-dot"></span> Danish CTF player</div>
+      <div class="eyebrow reveal"><span class="status-dot"></span> Danish cyber security enthusiast and CTF player.</div>
       <p class="hero-copy reveal">${SITE_TAGLINE}</p>
       <div class="hero-actions reveal">
         <a class="button button-primary" href="#writeups">Explore writeups <span aria-hidden="true">↓</span></a>
@@ -322,8 +322,8 @@ function homeMarkup(posts) {
       <div class="about-grid">
         <h2 id="about-title">Marvin Hald</h2>
         <div class="about-copy">
-          <p>I am a Danish CTF player. This site contains my CTF writeups and technical projects.</p>
-          <div class="focus-list" aria-label="Areas of interest"><span>Web security</span><span>Linux</span><span>Forensics</span><span>Reverse engineering</span><span>CTFs</span></div>
+          <p>I am a Danish CTF player, cyber security enthusiast and challenge developer. This site contains my CTF writeups and technical projects.</p>
+          <div class="focus-list" aria-label="Areas of interest"><span>Web security</span><span>Linux</span><span>Forensics</span><span>Reverse engineering</span><span>CTFs</span><span>Cryptography</span></div>
         </div>
       </div>
     </section>
@@ -334,7 +334,7 @@ function homeMarkup(posts) {
         <div class="resume-column reveal">
           <h3>Experience</h3>
           <div class="timeline">
-            <article class="timeline-item"><div class="timeline-marker" aria-hidden="true">CS</div><div><div class="timeline-topline"><h4>Student Assistant · Challenge Developer</h4><time datetime="2025-11">Nov 2025 — Present</time></div><p class="timeline-organization">Campfire Security · Part-time</p><p class="timeline-location">Copenhagen, Capital Region of Denmark</p><ul class="skill-list" aria-label="Skills used at Campfire Security"><li>Cybersecurity</li><li>Programming</li></ul></div></article>
+            <article class="timeline-item"><div class="timeline-marker" aria-hidden="true">CS</div><div><div class="timeline-topline"><h4>Student Assistant - Challenge Developer</h4><time datetime="2025-11">Nov 2025 — Present</time></div><p class="timeline-organization">Campfire Security - Part-time</p><p class="timeline-location">Copenhagen, Capital Region of Denmark</p><ul class="skill-list" aria-label="Skills used at Campfire Security"><li>Cybersecurity</li><li>Programming</li></ul></div></article>
             <article class="timeline-item"><div class="timeline-marker timeline-marker-denmark" aria-hidden="true">CP</div><div><div class="timeline-topline"><h4>Frivillig på hackerholdet</h4><time datetime="2026-06">Jun 2026 — present</time></div><p class="timeline-organization">Coding Pirates Lyngby</p><ul class="skill-list" aria-label="Skills used at Coding Pirates"><li>Cybersecurity</li><li>Programming</li></ul></div></article>
             <article class="timeline-item"><div class="timeline-marker timeline-marker-denmark" aria-hidden="true">DK</div><div><div class="timeline-topline"><h4>Cyberlandsholdet</h4><time datetime="2025-06">Jun 2025 — Jun 2026</time></div><p class="timeline-organization">De Danske Cybermesterskaber</p><ul class="skill-list" aria-label="Skills used with Cyberlandsholdet"><li>Cybersecurity</li><li>Teamwork</li></ul></div></article>
           </div>
@@ -357,7 +357,7 @@ function articleMarkup(post) {
   return `<article class="article-shell">
     <header class="article-header reveal">
       <a class="back-link" href="index.html#writeups"><span aria-hidden="true">←</span> All writeups</a>
-      <div class="eyebrow">CTF writeup</div>
+      <div class="eyebrow">Blog post</div>
       <h1>${escapeHtml(post.title)}</h1>
       <p>${escapeHtml(post.excerpt)}</p>
       <div class="article-meta"><time datetime="${escapeHtml(post.date)}">${escapeHtml(formatDate(post.date))}</time><span>${post.readTime} minute read</span></div>
@@ -368,7 +368,21 @@ function articleMarkup(post) {
 }
 
 function notFoundMarkup(message = "The writeup does not exist or the URL is incorrect.") {
-  return `<section class="not-found"><div class="eyebrow">404 · Writeup not found</div><h1>Page not found</h1><p>${escapeHtml(message)}</p><a class="button button-primary" href="index.html">Return home</a></section>`;
+  return `<section class="not-found"><div class="eyebrow">404 - Writeup not found</div><h1>Page not found</h1><p>${escapeHtml(message)}</p><a class="button button-primary" href="index.html">Return home</a></section>`;
+}
+
+function scrollToHashTarget() {
+  if (!window.location.hash) return;
+
+  let id;
+  try {
+    id = decodeURIComponent(window.location.hash.slice(1));
+  } catch (_) {
+    return;
+  }
+
+  const target = document.getElementById(id);
+  if (target) requestAnimationFrame(() => target.scrollIntoView());
 }
 
 function initializeInteractions() {
@@ -426,28 +440,36 @@ function initializeInteractions() {
 
 async function start() {
   const requestedSlug = new URLSearchParams(window.location.search).get("p");
+
+  if (requestedSlug === null) {
+    document.querySelectorAll('a[href^="index.html#"]').forEach((link) => {
+      link.href = link.hash;
+    });
+  }
+
   try {
     const posts = await loadWriteups();
     if (requestedSlug === null) {
       main.innerHTML = homeMarkup(posts);
-      document.title = `${SITE_TITLE} · Security writeups`;
+      document.title = `${SITE_TITLE} - Cyber Security Blog`;
       description.content = SITE_TAGLINE;
     } else {
       const post = posts.find((candidate) => candidate.slug === slugify(requestedSlug));
       if (!post) {
         main.innerHTML = notFoundMarkup();
-        document.title = `Page not found · ${SITE_TITLE}`;
+        document.title = `Page not found - ${SITE_TITLE}`;
       } else {
         main.innerHTML = articleMarkup(post);
-        document.title = `${post.title} · ${SITE_TITLE}`;
+        document.title = `${post.title} - ${SITE_TITLE}`;
         description.content = post.excerpt;
       }
     }
     initializeInteractions();
+    scrollToHashTarget();
   } catch (error) {
     console.error(error);
     main.innerHTML = notFoundMarkup("The writeups could not be loaded.");
-    document.title = `Unable to load · ${SITE_TITLE}`;
+    document.title = `Unable to load - ${SITE_TITLE}`;
   }
 }
 
